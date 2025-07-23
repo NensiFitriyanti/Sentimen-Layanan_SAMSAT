@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SENTIMEN LAYANAN SAMSAT</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.9/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div id="root"></div>
+  <script type="text/babel">
+    function StatCard({ title, value, icon }) {
+      return (
+        <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
+          <div className="text-3xl">{icon}</div>
+          <div>
+            <h3 className="text-gray-500 text-sm font-medium">{title}</h3>
+            <p className="text-2xl font-semibold">{value}</p>
+          </div>
+        </div>
+      );
+    }
+
+    function PlatformChartCard() {
+      React.useEffect(() => {
+        const ctx = document.getElementById('platformChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Google Maps', 'Instagram', 'YouTube'],
+            datasets: [{
+              label: 'Jumlah Komentar',
+              data: [35, 48, 61],
+              backgroundColor: ['#3b82f6', '#ec4899', '#ef4444']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }, []);
+
+      return (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4">Jumlah Komentar per Platform</h2>
+          <div className="relative h-64 max-w-md mx-auto">
+            <canvas id="platformChart"></canvas>
+          </div>
+        </div>
+      );
+    }
+
+    function SentimentChartCard() {
+      React.useEffect(() => {
+        const ctx = document.getElementById('sentimentChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['😊 Positif', '😠 Negatif', '🙂 Netral'],
+            datasets: [{
+              data: [112, 7, 133],
+              backgroundColor: ['#10b981', '#ef4444', '#f59e0b']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+      }, []);
+
+      return (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4">Distribusi Sentimen</h2>
+          <div className="relative h-64 max-w-md mx-auto">
+            <canvas id="sentimentChart"></canvas>
+          </div>
+          <div className="mt-4 text-sm space-y-1 text-gray-700 text-center">
+            <p>😊 Positif: 112 komentar (7.9%)</p>
+            <p>😠 Negatif: 7 komentar (4.6%)</p>
+            <p>🙂 Netral: 133 komentar (87.5%)</p>
+          </div>
+        </div>
+      );
+    }
+
+    function InsightCard() {
+      return (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4">🧠 Insight & Rekomendasi</h2>
+          <ul className="space-y-3 text-sm text-gray-700 list-disc list-inside">
+            <li>
+              <strong>Sentimen Negatif tertinggi berasal dari YouTube (61 komentar total)</strong>. Perlu ditinjau ulang konten atau strategi penyampaian informasi di platform ini. Bisa jadi karena kurang interaktif atau tidak merespons komentar dengan cepat.
+            </li>
+            <li>
+              <strong>Instagram memiliki jumlah komentar yang tinggi, namun dominan netral</strong>. Ini bisa menjadi peluang untuk meningkatkan sentimen positif lewat interaksi aktif atau kampanye visual yang lebih engaging.
+            </li>
+            <li>
+              <strong>Google Maps memiliki komentar paling sedikit, namun juga sedikit sentimen negatif</strong>. Ini menunjukkan eksposur rendah. Pertimbangkan untuk mengoptimalkan informasi layanan Samsat di profil Google Maps.
+            </li>
+            <li>
+              Fokuskan peningkatan <strong>strategi komunikasi di YouTube</strong>, karena potensi eksposurnya tinggi tapi kualitas persepsi publiknya rendah (banyak negatif).
+            </li>
+          </ul>
+        </div>
+      );
+    }
+
+    function Dashboard() {
+      return (
+        <div className="min-h-screen p-6">
+          <h1 className="text-3xl font-bold mb-6 text-center text-blue-800">SENTIMEN LAYANAN SAMSAT</h1>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <StatCard title="Google Maps" value="35 Komentar" icon="🗺️" />
+            <StatCard title="Instagram" value="48 Komentar" icon="📸" />
+            <StatCard title="YouTube" value="61 Komentar" icon="📺" />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <PlatformChartCard />
+            <SentimentChartCard />
+          </div>
+          <div className="mt-6">
+            <InsightCard />
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<Dashboard />, document.getElementById('root'));
+  </script>
+</body>
+</html>
